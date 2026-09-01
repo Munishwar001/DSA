@@ -10,38 +10,33 @@
  */
 class Solution {
     public ListNode deleteDuplicates(ListNode head) {
-        Stack<Integer> stack = new Stack<>();
 
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        ListNode prev = dummy;
         ListNode curr = head;
 
         while (curr != null) {
 
+            // Duplicate found
             if (curr.next != null && curr.val == curr.next.val) {
 
                 int duplicate = curr.val;
 
+                // Skip all nodes having this value
                 while (curr != null && curr.val == duplicate) {
                     curr = curr.next;
                 }
 
+                // Remove the entire duplicate group
+                prev.next = curr;
+
             } else {
-                stack.push(curr.val);
+                // Current node is unique
+                prev = curr;
                 curr = curr.next;
             }
-        }
-
-        ListNode dummy = new ListNode(0);
-        curr = dummy;
-
-        Stack<Integer> reverse = new Stack<>();
-
-        while (!stack.isEmpty()) {
-            reverse.push(stack.pop());
-        }
-
-        while (!reverse.isEmpty()) {
-            curr.next = new ListNode(reverse.pop());
-            curr = curr.next;
         }
 
         return dummy.next;
